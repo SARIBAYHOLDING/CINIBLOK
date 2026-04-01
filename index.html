@@ -74,6 +74,27 @@ body{
 }
 #game.visible{opacity:1;}
 
+@media (max-width: 520px) {
+  body {touch-action: manipulation;}
+  #header {padding:8px 10px 4px;}
+  #logo-area {font-size:15px;}
+  #logo-area small {font-size:7px;}
+  .hd-score .hd-label {font-size:7px;letter-spacing:2px;}
+  .hd-val {font-size:18px;}
+  .hd-val.sm {font-size:12px;}
+  #meta-bar {padding:3px 8px;gap:4px;}
+  .chip {padding:3px 5px;}
+  .chip .cv {font-size:11px;}
+  #streak-wrap {padding:2px 8px 0;}
+  #xp-wrap {padding:2px 10px 2px;}
+  #board {width:min(calc(100vw - 12px), 100vw);aspect-ratio:1;}
+  #tray {padding:6px 8px 4px;gap:5px;}
+  .slot {min-height:64px;max-height:78px;}
+  #hint {bottom:110px;font-size:10px;}
+  #main-menu h1 {font-size:clamp(24px,10vw,36px);}
+  #main-menu button {padding:12px 24px;font-size:15px;}
+}
+
 #main-menu{
   position:fixed;inset:0;z-index:950;
   background:rgba(6,2,2,.92);
