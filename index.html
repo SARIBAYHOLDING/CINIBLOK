@@ -36,31 +36,35 @@ body{
   background:var(--darker);
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
-  gap:0;
+  gap:0;animation:loadFadeIn .5s ease both;
 }
+@keyframes loadFadeIn{from{opacity:0;transform:scale(.95);}to{opacity:1;transform:scale(1);}}
 #ld-logo{
   font-family:'Cinzel',serif;font-size:clamp(30px,8vw,52px);font-weight:900;
   color:var(--gold);letter-spacing:4px;
   text-shadow:0 0 40px rgba(212,160,23,.7),0 0 80px rgba(212,160,23,.3);
-  animation:logoGlow 2s ease-in-out infinite alternate;
+  animation:logoGlow 2s cubic-bezier(.4,0,.2,1) infinite alternate, logoPulse 3s cubic-bezier(.4,0,.2,1) infinite;
 }
 @keyframes logoGlow{
   from{text-shadow:0 0 30px rgba(212,160,23,.5),0 0 60px rgba(212,160,23,.2);}
   to  {text-shadow:0 0 60px rgba(212,160,23,.9),0 0 120px rgba(212,160,23,.5);}
 }
+@keyframes logoPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
 #ld-sub{font-size:12px;color:rgba(253,246,236,.35);letter-spacing:5px;text-transform:uppercase;margin-top:5px;margin-bottom:36px;}
 #ld-orn{font-size:28px;color:var(--gold);opacity:.5;letter-spacing:12px;margin-bottom:28px;animation:ornPulse 1.5s ease-in-out infinite;}
 @keyframes ornPulse{0%,100%{opacity:.25;transform:scale(1);}50%{opacity:.7;transform:scale(1.05);}}
 .ld-blocks{display:flex;gap:8px;margin-bottom:36px;}
-.ld-b{width:18px;height:18px;border-radius:5px;animation:bbounce .8s ease-in-out infinite;}
+.ld-b{width:18px;height:18px;border-radius:5px;animation:bbounce .8s ease-in-out infinite;filter:drop-shadow(0 0 6px currentColor);}
 .ld-b:nth-child(1){background:#C0392B;animation-delay:0s;}
 .ld-b:nth-child(2){background:#D4A017;animation-delay:.12s;}
 .ld-b:nth-child(3){background:#1A7A6E;animation-delay:.24s;}
 .ld-b:nth-child(4){background:#8E44AD;animation-delay:.36s;}
 .ld-b:nth-child(5){background:#2980B9;animation-delay:.48s;}
-@keyframes bbounce{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-12px) rotate(15deg);}}
-#ld-bar-wrap{width:200px;height:4px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;margin-bottom:14px;}
-#ld-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--dark-red),var(--gold));border-radius:99px;transition:width .2s ease;box-shadow:0 0 12px rgba(212,160,23,.6);}
+@keyframes bbounce{0%,100%{transform:translateY(0) rotate(0deg);filter:drop-shadow(0 0 6px currentColor) brightness(1);}50%{transform:translateY(-12px) rotate(15deg);filter:drop-shadow(0 0 12px currentColor) brightness(1.5);}}
+#ld-bar-wrap{width:200px;height:4px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;margin-bottom:14px;animation:barGlow 2s ease-in-out infinite alternate;}
+#ld-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--dark-red),var(--gold));border-radius:99px;transition:width .2s ease;box-shadow:0 0 12px rgba(212,160,23,.6);animation:barFill 1s ease-in-out infinite;}
+@keyframes barGlow{from{box-shadow:0 0 8px rgba(255,255,255,.1);}to{box-shadow:0 0 16px rgba(255,255,255,.3);}}
+@keyframes barFill{0%,100%{opacity:1;}50%{opacity:.8;}}
 #ld-txt{font-size:12px;color:rgba(253,246,236,.35);letter-spacing:2px;}
 
 /* ══════════ GAME WRAPPER ══════════ */
@@ -97,21 +101,49 @@ body{
 
 #main-menu{
   position:fixed;inset:0;z-index:950;
-  background:rgba(6,2,2,.92);
+  background:rgba(4,1,1,.84);backdrop-filter:blur(6px);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:18px;padding:20px;text-align:center;
+  gap:14px;padding:20px;text-align:center;
   color:var(--cream);font-family:'Cinzel',serif;
   visibility:hidden;opacity:0;transition:opacity .28s ease, visibility .28s ease;
 }
-#main-menu.show{visibility:visible;opacity:1;}
-#main-menu h1{font-size:clamp(26px,8vw,46px);letter-spacing:4px;color:var(--gold);margin-bottom:6px;}
-#main-menu p{font-size:14px;color:rgba(253,246,236,.72);letter-spacing:1px;}
-#main-menu button{border:none;outline:none;padding:14px 30px;border-radius:50px;cursor:pointer;
-  background:linear-gradient(135deg,var(--red),var(--dark-red));
-  color:var(--cream);font-size:16px;font-family:'Nunito',sans-serif;font-weight:900;letter-spacing:1px;
-  box-shadow:0 5px 22px rgba(192,57,43,.45);transition:transform .13s ease,filter .15s ease;
+#main-menu.show{visibility:visible;opacity:1;animation:menuSlideIn .4s cubic-bezier(.34,1.56,.64,1) both;}
+@keyframes menuSlideIn{from{opacity:0;transform:translateY(20px) scale(.95);}to{opacity:1;transform:translateY(0) scale(1);}}
+#main-menu .menu-panel{width:min(94vw,420px);background:rgba(8,6,5,.86);border:1px solid rgba(212,160,23,.35);box-shadow:0 12px 40px rgba(0,0,0,.55);border-radius:20px;padding:16px;backdrop-filter:blur(4px);transition:transform .3s ease,box-shadow .3s ease;}
+#main-menu h1{font-size:clamp(28px,7vw,46px);letter-spacing:4px;color:var(--gold);margin:0 0 8px;}
+#main-menu p{font-size:14px;color:rgba(253,246,236,.75);letter-spacing:1px;margin:0 0 14px;}
+#main-menu .menu-meta{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:center;margin-bottom:14px;}
+#main-menu .menu-meta label{display:inline-flex;flex-direction:column;align-items:center;font-size:12px;color:rgba(253,246,236,.9);font-family:'Nunito',sans-serif;}
+#main-menu .menu-meta select{background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.25);color:var(--cream);border-radius:10px;padding:8px 10px;font-family:'Nunito',sans-serif;font-size:13px;min-width:110px;}
+#main-menu .menu-row{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-bottom:10px;}
+#main-menu button{border:none;outline:none;margin:0;min-width:116px;padding:10px 18px;border-radius:999px;cursor:pointer;
+  color:var(--cream);font-size:14px;font-family:'Nunito',sans-serif;font-weight:900;letter-spacing:1px;
+  transition:all .25s cubic-bezier(.4,0,.2,1);
 }
-#main-menu button:hover{transform:translateY(-2px);filter:brightness(1.06);}
+#main-menu .btn-primary{background:linear-gradient(135deg,var(--red),var(--dark-red));box-shadow:0 6px 16px rgba(192,57,43,.4);}
+#main-menu .btn-secondary{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.28);}
+#main-menu .btn-icon{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2);width:40px;height:40px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;}
+#main-menu button:hover{transform:translateY(-2px);filter:brightness(1.08);}
+#main-menu button:active{transform:translateY(0);}
+#main-menu .info-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:12px;max-width:100%;margin-top:6px;animation:infoFadeIn .3s ease both;}
+@keyframes infoFadeIn{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
+#main-menu .info-box h3{margin:0 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:2px;color:var(--light-gold);}
+#main-menu .info-box p{margin:0;font-size:13px;line-height:1.42;color:rgba(253,246,236,.83);}
+#main-menu .hidden{display:none;}
+
+@media (max-width: 520px) {
+  #main-menu .menu-panel {width:calc(100vw - 24px);padding:14px;}
+  #main-menu h1 {font-size:clamp(24px,10vw,34px);}
+  #main-menu p {font-size:13px;}
+  #main-menu button {font-size:13px;min-width:100px;}
+  #main-menu .menu-meta select {min-width:96px;padding:6px 8px;font-size:12px;}
+  #main-menu .btn-icon {width:36px;height:36px;}
+}
+@media (max-width: 360px) {
+  #main-menu .menu-panel {padding:12px;}
+  #main-menu h1 {font-size:clamp(20px,12vw,30px);}
+  #main-menu button {font-size:12px;min-width:90px;padding:8px 14px;}
+}
 
 /* ══════════ HEADER ══════════ */
 #header{
@@ -486,10 +518,40 @@ body{
 </div>
 
 <div id="main-menu">
-  <h1>ÇİNİ BLOK</h1>
-  <p>Türk Bulmaca Oyunu</p>
-  <button id="play-btn" onclick="startGame()">OYNA</button>
-  <small>Başlamak için OYNA'ya dokun veya tıkla</small>
+  <div class="menu-panel">
+    <h1>ÇİNİ BLOK</h1>
+    <p>32x32 stratejik blok temizleme bulmacası</p>
+    <div class="menu-meta">
+      <label>Zorluk
+        <select id="difficulty" onchange="setDifficulty(this.value)">
+          <option value="easy">Kolay</option>
+          <option value="normal" selected>Normal</option>
+          <option value="hard">Zor</option>
+        </select>
+      </label>
+      <label>Ses
+        <button id="sound-btn" class="btn-secondary" onclick="toggleSound()">Açık</button>
+      </label>
+    </div>
+    <div class="menu-row">
+      <button class="btn-primary" id="play-btn" onclick="startGame()" style="text-align:center;">OYNA</button>
+      <button class="btn-secondary" id="tutorial-btn" onclick="toggleHelp()">NASIL OYNANIR</button>
+    </div>
+    <div class="menu-row">
+      <button class="btn-secondary" id="scores-btn" onclick="showScores()">REKOR</button>
+      <button class="btn-secondary" onclick="window.close()">KAPAT</button>
+    </div>
+    <div class="info-box hidden" id="help-panel">
+      <h3>Nasıl Oynanır</h3>
+      <p>Tahtaya parça yerleştir, satır/kolon doldurup temizle, puan topla. 3 parça bittikten sonra yeni parça gelir. Oyun bitince seviye/puan tablosu sunulur.</p>
+      <button class="btn-secondary" onclick="toggleHelp()">KAPAT</button>
+    </div>
+    <div class="info-box hidden" id="score-panel">
+      <h3>En Yüksek Skor</h3>
+      <p id="highscore-text"></p>
+      <button class="btn-secondary" onclick="toggleScores()">KAPAT</button>
+    </div>
+  </div>
 </div>
 
 <div id="levelup">
@@ -645,7 +707,7 @@ ptLoop();
 let aud=null;
 function initAud(){if(!aud)try{aud=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}}
 function tone(f,type='sine',dur=.1,vol=.13,delay=0){
-  if(!aud)return;
+  if(!aud || !soundEnabled) return;
   try{
     const o=aud.createOscillator(),g=aud.createGain();
     o.connect(g);g.connect(aud.destination);
@@ -696,6 +758,38 @@ const SHAPES=[
    STATE
 ═══════════════════════════════════════════ */
 let board,pieces,selIdx,score,best,combo,maxCombo,cleared,level,xp,streak,active,pendingLU;
+let difficulty='normal';
+let soundEnabled=true;
+let scoreMultiplier=1;
+
+function setDifficulty(level){
+  difficulty=level;
+  scoreMultiplier= level==='easy'?0.88: level==='hard'?1.2:1;
+  const d=document.getElementById('difficulty');
+  if(d) d.value=level;
+}
+function toggleSound(){
+  soundEnabled=!soundEnabled;
+  const b=document.getElementById('sound-btn');
+  if(b){b.textContent=soundEnabled?'Açık':'Kapalı';}
+  if(!soundEnabled && aud){aud.suspend();}
+  else if(soundEnabled && aud){aud.resume().catch(()=>{});}
+}
+function toggleHelp(){
+  const p=document.getElementById('help-panel');
+  if(!p) return;
+  p.classList.toggle('hidden');
+}
+function showScores(){
+  const p=document.getElementById('score-panel');
+  const t=document.getElementById('highscore-text');
+  if(t) t.textContent='En yüksek: '+(parseInt(localStorage.getItem('ciniBest')||'0')).toLocaleString('tr-TR')+' puan';
+  if(p) p.classList.remove('hidden');
+}
+function toggleScores(){
+  const p=document.getElementById('score-panel');
+  if(p) p.classList.add('hidden');
+}
 
 /* ═══════════════════════════════════════════
    LOADING SEQUENCE
@@ -712,6 +806,9 @@ function runLoading(){
         setTimeout(()=>{
           l.style.display='none';
           document.getElementById('game').classList.add('visible');
+          setDifficulty(difficulty);
+          const soundBtn=document.getElementById('sound-btn');
+          if(soundBtn) soundBtn.textContent=soundEnabled?'Açık':'Kapalı';
           document.getElementById('main-menu').classList.add('show');
         },600);
       },300);return;
@@ -848,13 +945,14 @@ function clearLines(placed){
    SCORE / XP / META
 ═══════════════════════════════════════════ */
 function addScore(pts,pos){
-  score+=pts;
+  const adjusted=Math.round(pts*scoreMultiplier);
+  score+=adjusted;
   if(score>best){best=score;localStorage.setItem('ciniBest',best);upBest();}
   upScore();
   const layer=document.getElementById('score-layer');
   const d=document.createElement('div');d.className='spop';
-  d.textContent='+'+pts;
-  d.style.cssText=`left:${pos.x}px;top:${pos.y}px;font-size:${Math.min(13+pts/18,26)}px;`;
+  d.textContent='+'+adjusted;
+  d.style.cssText=`left:${pos.x}px;top:${pos.y}px;font-size:${Math.min(13+adjusted/18,26)}px;`;
   layer.appendChild(d);spawnRise(pos.x,pos.y,'#FFD700',8);
   setTimeout(()=>d.remove(),1050);
 }
@@ -908,6 +1006,8 @@ function closeLevelUp(){
 }
 
 function startGame(){
+  const select = document.getElementById('difficulty');
+  if(select){ setDifficulty(select.value); }
   document.getElementById('main-menu').classList.remove('show');
   initGame();
 }
